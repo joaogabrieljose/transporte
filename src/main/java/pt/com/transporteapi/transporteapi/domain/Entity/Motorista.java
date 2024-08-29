@@ -2,6 +2,8 @@ package pt.com.transporteapi.transporteapi.domain.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Motorista {
     @Id
@@ -11,11 +13,11 @@ public class Motorista {
     private String name;
     private String licenca;
     private boolean disponivel;
-    @ManyToOne
-    private Veiculo veiculo;
+    @OneToMany(mappedBy = "motorista")
+    private List<Veiculo> veiculo;
 
     public Motorista(){}
-    public Motorista(long id, String name, String licenca, boolean disponivel, Veiculo veiculo) {
+    public Motorista(long id, String name, String licenca, boolean disponivel, List<Veiculo> veiculo) {
         this.id = id;
         this.name = name;
         this.licenca = licenca;
@@ -55,11 +57,11 @@ public class Motorista {
         this.disponivel = disponivel;
     }
 
-    public Veiculo getVeiculo() {
+    public List<Veiculo> getVeiculo() {
         return veiculo;
     }
 
-    public void setVeiculo(Veiculo veiculo) {
+    public void setVeiculo(List<Veiculo> veiculo) {
         this.veiculo = veiculo;
     }
 }

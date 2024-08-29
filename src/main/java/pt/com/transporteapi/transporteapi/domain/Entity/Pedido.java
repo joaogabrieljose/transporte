@@ -12,24 +12,28 @@ public class Pedido {
     private String endercoOrigem;
     private String enderecoDestino;
     private double peso;
-    private boolean status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataEntregaPrevista;
     @ManyToOne
+    @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;
+
+    @ManyToOne
+    @JoinColumn(name = "motorista_id")
+    private Motorista motorista;
 
     public Pedido(){}
 
-    public Pedido(long id, String endercoOrigem, String enderecoDestino, double peso, boolean status,
-                  LocalDateTime dataCriacao, LocalDateTime dataEntregaPrevista, Veiculo veiculo) {
+    public Pedido(long id, String endercoOrigem, String enderecoDestino, double peso, LocalDateTime dataCriacao,
+                  LocalDateTime dataEntregaPrevista, Veiculo veiculo, Motorista motorista) {
         this.id = id;
         this.endercoOrigem = endercoOrigem;
         this.enderecoDestino = enderecoDestino;
         this.peso = peso;
-        this.status = status;
         this.dataCriacao = dataCriacao;
         this.dataEntregaPrevista = dataEntregaPrevista;
         this.veiculo = veiculo;
+        this.motorista = motorista;
     }
 
     public long getId() {
@@ -64,14 +68,6 @@ public class Pedido {
         this.peso = peso;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
@@ -94,5 +90,13 @@ public class Pedido {
 
     public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
+    }
+
+    public Motorista getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
     }
 }
