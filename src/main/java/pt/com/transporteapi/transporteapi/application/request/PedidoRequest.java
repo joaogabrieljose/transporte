@@ -10,18 +10,20 @@ public class PedidoRequest {
     public String endercoOrigem;
     public String enderecoDestino;
     public StatusPedido status;
+    public double peso;
     public LocalDateTime dataCriacao;
     public LocalDateTime dataEntregaPrevista;
     public long veiculoId;
 
     public PedidoRequest(){}
 
-    public PedidoRequest(long id, String endercoOrigem, String enderecoDestino, StatusPedido status,
+    public PedidoRequest(long id, String endercoOrigem, String enderecoDestino, StatusPedido status, double peso,
                          LocalDateTime dataCriacao, LocalDateTime dataEntregaPrevista, long veiculoId) {
         this.id = id;
         this.endercoOrigem = endercoOrigem;
         this.enderecoDestino = enderecoDestino;
         this.status = status;
+        this.peso = peso;
         this.dataCriacao = dataCriacao;
         this.dataEntregaPrevista = dataEntregaPrevista;
         this.veiculoId = veiculoId;
@@ -81,5 +83,13 @@ public class PedidoRequest {
 
     public void setVeiculoId(long veiculoId) {
         this.veiculoId = veiculoId;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
     }
 }

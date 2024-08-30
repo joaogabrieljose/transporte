@@ -1,25 +1,21 @@
 package pt.com.transporteapi.transporteapi.application.request;
 
-import pt.com.transporteapi.transporteapi.domain.Entity.Veiculo;
-
-import java.util.List;
-
 public class MotoristaRequest {
 
     private long id;
     private String name;
     private String licenca;
     private boolean disponivel;
-    private List<Veiculo> veiculo;
+    private long veiculoId;
 
     public MotoristaRequest(){}
 
-    public MotoristaRequest(long id, String name, String licenca, boolean disponivel, List<Veiculo> veiculo) {
+    public MotoristaRequest(long id, String name, String licenca, boolean disponivel,long veiculoId) {
         this.id = id;
         this.name = name;
         this.licenca = licenca;
         this.disponivel = disponivel;
-        this.veiculo = veiculo;
+        this.veiculoId = veiculoId;
     }
 
     public long getId() {
@@ -54,11 +50,11 @@ public class MotoristaRequest {
         this.disponivel = disponivel;
     }
 
-    public List<Veiculo> getVeiculo() {
-        return veiculo;
+    public long getVeiculo() {
+        return veiculoId;
     }
 
-    public void setVeiculo(List<Veiculo> veiculo) {
-        this.veiculo = veiculo;
+    public void setVeiculo(long veiculoId) {
+        this.veiculoId = veiculoId;
     }
 }
