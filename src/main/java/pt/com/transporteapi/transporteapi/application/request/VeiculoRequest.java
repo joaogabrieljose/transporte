@@ -1,33 +1,22 @@
 package pt.com.transporteapi.transporteapi.application.request;
 
 public class VeiculoRequest {
+    public String modelo;
+    public String placa;
+    public double capacidade;
+    public boolean disponivel;
 
-    private long id;
-    private String modelo;
-    private String placa;
-    private double capacidade;
-    private boolean disponivel;
-
-    private long motoristaId;
+    public long motoristaId;
 
     public VeiculoRequest(){}
 
-    public VeiculoRequest(long id, String modelo, String placa, double capacidade,
+    public VeiculoRequest(String modelo, String placa, double capacidade,
                           boolean disponivel, long motoristaId) {
-        this.id = id;
         this.modelo = modelo;
         this.placa = placa;
         this.capacidade = capacidade;
         this.disponivel = disponivel;
         this.motoristaId = motoristaId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getModelo() {

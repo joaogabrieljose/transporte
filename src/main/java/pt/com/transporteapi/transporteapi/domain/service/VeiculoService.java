@@ -27,7 +27,6 @@ public class VeiculoService {
     public Veiculo updateVeiculo(long id, Veiculo veiculo) {
         Veiculo veiculoId = serviceVeiculo.findVeiculoById(id)
                 .orElseThrow(() -> new EntityNotFoundException("veiculo não encontrado com id" + id));
-        veiculoId.setId(veiculo.getId());
         veiculoId.setMotorista(veiculo.getMotorista());
         veiculoId.setModelo(veiculo.getModelo());
         veiculoId.setCapacidade(veiculo.getCapacidade());
@@ -59,5 +58,10 @@ public class VeiculoService {
             return true;
         }
         return false;
+    }
+
+    public boolean deleteById(long id){
+        serviceVeiculo.deleteById(id);
+        return true;
     }
 }
