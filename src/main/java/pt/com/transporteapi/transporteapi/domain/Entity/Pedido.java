@@ -12,6 +12,7 @@ public class Pedido {
     private String endercoOrigem;
     private String enderecoDestino;
     private double peso;
+    private StatusPedido status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataEntregaPrevista;
     @ManyToOne
@@ -24,12 +25,13 @@ public class Pedido {
 
     public Pedido(){}
 
-    public Pedido(long id, String endercoOrigem, String enderecoDestino, double peso, LocalDateTime dataCriacao,
+    public Pedido(long id, String endercoOrigem, String enderecoDestino, double peso, StatusPedido status, LocalDateTime dataCriacao,
                   LocalDateTime dataEntregaPrevista, Veiculo veiculo, Motorista motorista) {
         this.id = id;
         this.endercoOrigem = endercoOrigem;
         this.enderecoDestino = enderecoDestino;
         this.peso = peso;
+        this.status = status;
         this.dataCriacao = dataCriacao;
         this.dataEntregaPrevista = dataEntregaPrevista;
         this.veiculo = veiculo;
@@ -98,5 +100,13 @@ public class Pedido {
 
     public void setMotorista(Motorista motorista) {
         this.motorista = motorista;
+    }
+
+    public StatusPedido getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
     }
 }
