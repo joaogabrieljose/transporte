@@ -19,15 +19,13 @@ public class MotoristaService {
     }
 
     public Motorista updateMotorista(long id, Motorista motorista) {  // atualizar motorista
-        Motorista update = motoristaService.findMotoristaById(id)
-                .orElseThrow(() -> new EntityNotFoundException("motorista não encontrado com id"+id));
-
-        update.setId(motorista.getId());
-        update.setName(motorista.getName());
-        update.setDisponivel(motorista.isDisponivel());
-        update.setLicenca(motorista.getLicenca());
-        update.setVeiculo(motorista.getVeiculo());
-        return motoristaService.save(update);
+       Motorista novoMotorista  = motoristaService.findMotoristaById(id)
+               .orElseThrow(()-> new EntityNotFoundException("motorista não encontrado com id"+id));
+        novoMotorista.setName(motorista.getName());
+       novoMotorista.setDisponivel(motorista.isDisponivel());
+       novoMotorista.setLicenca(motorista.getLicenca());
+       novoMotorista.setVeiculo(motorista.getVeiculo());
+       return motoristaService.save(novoMotorista);
     }
 
     public boolean deleteById(long id) {   // apaga motorista por id

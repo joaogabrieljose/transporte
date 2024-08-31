@@ -7,23 +7,32 @@ import pt.com.transporteapi.transporteapi.domain.Entity.Veiculo;
 
 public class MotoristaMapper {
 
-    public static Motorista toMotorista(MotoristaRequest request){
-        Veiculo veiculo = new Veiculo();
-        veiculo.setId(request.getId());
-
+    public static Motorista toMotorista(MotoristaRequest request) {
         Motorista motorista = new Motorista();
-        motorista.setId(request.getId());
+
+        if (request.getVeiculoId() != 0 ) {
+            Veiculo veiculo = new Veiculo();
+            veiculo.setId(request.getVeiculoId());
+            motorista.setVeiculo(veiculo);
+        }
+
         motorista.setName(request.getName());
         motorista.setLicenca(request.getLicenca());
-        return  motorista;
+        motorista.setDisponivel(request.isDisponivel());
+        return motorista;
     }
 
-    public static MotoristaResponse toMotoristaResponse(Motorista motorista){
+    public static MotoristaResponse toMotoristaResponse(Motorista motorista) {
         MotoristaResponse response = new MotoristaResponse();
-        response.setId(motorista.getId());
+
+        if (motorista.getVeiculo() != null) {
+            response.setVeiculoId(motorista.getVeiculo().getId());
+        }
+
         response.setName(motorista.getName());
-        response.setVeiculoId(motorista.getVeiculo().getId());
         response.setLicenca(motorista.getLicenca());
-        return  response;
+        response.setDisponivel(motorista.isDisponivel());
+
+        return response;
     }
 }
