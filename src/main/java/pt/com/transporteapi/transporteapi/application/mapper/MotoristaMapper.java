@@ -29,6 +29,7 @@ public class MotoristaMapper {
             response.setVeiculoId(motorista.getVeiculo().getId());
         }
 
+        response.setId(motorista.getId());
         response.setName(motorista.getName());
         response.setLicenca(motorista.getLicenca());
         response.setDisponivel(motorista.isDisponivel());

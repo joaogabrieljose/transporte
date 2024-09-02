@@ -16,6 +16,7 @@ public class VeiculoMapper {
             veiculo.setMotorista(motorista);
         }
 
+
         veiculo.setModelo(request.getModelo());
         veiculo.setPlaca(request.getPlaca());
         veiculo.setCapacidade(request.getCapacidade());
@@ -29,6 +30,7 @@ public class VeiculoMapper {
         if (veiculo.getMotorista() != null) {
             response.setMotoristaId(veiculo.getMotorista().getId());
         }
+        response.setId(veiculo.getId());
         response.setModelo(veiculo.getModelo());
         response.setPlaca(veiculo.getPlaca());
         response.setCapacidade(veiculo.getCapacidade());

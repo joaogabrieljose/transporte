@@ -3,13 +3,13 @@ package pt.com.transporteapi.transporteapi.domain.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.com.transporteapi.transporteapi.domain.Entity.Motorista;
+import pt.com.transporteapi.transporteapi.application.mapper.VeiculoMapper;
+import pt.com.transporteapi.transporteapi.application.request.VeiculoRequest;
+import pt.com.transporteapi.transporteapi.application.response.VeiculoResponse;
 import pt.com.transporteapi.transporteapi.domain.Entity.Veiculo;
-import pt.com.transporteapi.transporteapi.domain.repository.IMotoristaRepository;
 import pt.com.transporteapi.transporteapi.domain.repository.IVeiculoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VeiculoService {
@@ -17,50 +17,44 @@ public class VeiculoService {
     @Autowired
     private IVeiculoRepository serviceVeiculo;
 
-    @Autowired
-    private IMotoristaRepository motorista;
 
-    public Veiculo createVeiculo(Veiculo veiculo) {
-        return serviceVeiculo.save(veiculo);
+    public VeiculoResponse createVeiculo(VeiculoRequest request) {
+        var create = VeiculoMapper.toVeiculo(request);
+        var novo = serviceVeiculo.save(create);
+        VeiculoResponse novoVeiculo = VeiculoMapper.toVeiculoResponse(novo);
+        return novoVeiculo;
     }
 
-    public Veiculo updateVeiculo(long id, Veiculo veiculo) {
-        Veiculo veiculoId = serviceVeiculo.findVeiculoById(id)
+    public VeiculoResponse updateVeiculo(long id, VeiculoRequest veiculo) {
+        var novoVeiculo = VeiculoMapper.toVeiculo(veiculo);
+
+        var veiculoId = serviceVeiculo.findVeiculoById(id)
                 .orElseThrow(() -> new EntityNotFoundException("veiculo não encontrado com id" + id));
-        veiculoId.setMotorista(veiculo.getMotorista());
-        veiculoId.setModelo(veiculo.getModelo());
-        veiculoId.setCapacidade(veiculo.getCapacidade());
-        veiculoId.setPlaca(veiculo.getPlaca());
-        veiculoId.setDisponivel(veiculo.isDisponivel());
-        return serviceVeiculo.save(veiculoId);
+
+        veiculoId.setMotorista(novoVeiculo.getMotorista());
+        veiculoId.setModelo(novoVeiculo.getModelo());
+        veiculoId.setCapacidade(novoVeiculo.getCapacidade());
+        veiculoId.setPlaca(novoVeiculo.getPlaca());
+        veiculoId.setDisponivel(novoVeiculo.isDisponivel());
+
+        var veiculoUpdate = serviceVeiculo.save(veiculoId);
+        return VeiculoMapper.toVeiculoResponse(veiculoUpdate);
     }
 
-    public List<Veiculo> findVeiculoAll() {
-        return (List<Veiculo>) serviceVeiculo.findAll();
+    public List<VeiculoResponse> findaVeiculoAll() {
+        List<Veiculo> novo = (List<Veiculo>) serviceVeiculo.findAll();
+        List<VeiculoResponse> lista = novo.stream().map(VeiculoMapper::toVeiculoResponse).toList();
+        return lista;
     }
 
-    public Veiculo getVeiculoById(long id) {
-        Optional<Veiculo> veiculo = serviceVeiculo.findVeiculoById(id);
-        return veiculo.orElseThrow(() -> new EntityNotFoundException("veiculo não encontrado com id" + id));
+    public VeiculoResponse getVeiculoById(long id) {
+        Veiculo veiculo = serviceVeiculo.findVeiculoById(id)
+                .orElseThrow(() -> new EntityNotFoundException("veiculo não encontrado com id" + id));
+        return VeiculoMapper.toVeiculoResponse(veiculo);
     }
 
 
-    // Atribuir um motorista a um veículo.
-    public boolean atribuirMotoristaAoVeiculo(long motoristaId, long veiculoId) {
-        Optional<Motorista> novoMotorista = motorista.findMotoristaById(motoristaId);
-        Optional<Veiculo> veiculo = serviceVeiculo.findVeiculoById(veiculoId);
-        if (novoMotorista.isPresent() && veiculo.isPresent()) {
-            Veiculo novo = veiculo.get();
-            Motorista motoristaAtribuir = novoMotorista.get();
-
-            novo.setMotorista(motoristaAtribuir);
-            serviceVeiculo.save(novo);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean deleteById(long id){
+    public boolean deleteById(long id) {
         serviceVeiculo.deleteById(id);
         return true;
     }

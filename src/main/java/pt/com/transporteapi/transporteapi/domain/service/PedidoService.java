@@ -3,6 +3,9 @@ package pt.com.transporteapi.transporteapi.domain.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.com.transporteapi.transporteapi.application.mapper.PedidoMapper;
+import pt.com.transporteapi.transporteapi.application.request.PedidoRequest;
+import pt.com.transporteapi.transporteapi.application.response.PedidoResponse;
 import pt.com.transporteapi.transporteapi.domain.Entity.Pedido;
 import pt.com.transporteapi.transporteapi.domain.Entity.StatusPedido;
 import pt.com.transporteapi.transporteapi.domain.repository.IPedidoRepository;
@@ -16,24 +19,32 @@ public class PedidoService {
     @Autowired
     private IPedidoRepository repository;
 
-    public Pedido create(Pedido pedido) {
-        return repository.save(pedido);
+    public PedidoResponse create(PedidoRequest request) {
+        var create = PedidoMapper.toPedido(request);
+        var pedido = repository.save(create);
+        PedidoResponse novo = PedidoMapper.toPedidoRespponse(pedido);
+        return novo;
     }
-
 
     public Pedido updateStatusPedido(long id, StatusPedido novoStatus) {
         Optional<Pedido> pedidoNovo = repository.findPedidoById(id);
         if (pedidoNovo.isPresent()) {
             Pedido novo = pedidoNovo.get();
-            if (isValidStatusTransition(novo.getStatus(), novoStatus)) { // Verifica a transição de status é válida
-                novo.setStatus(StatusPedido.valueOf(String.valueOf(novoStatus)));
+
+            if (novo.getStatus() == null || novoStatus == null) {
+                throw new IllegalStateException("Transição de status inválida: de "
+                        + novo.getStatus() + " para " + novoStatus);
+            }
+            if (isValidStatusTransition(novo.getStatus(), novoStatus)) {
+                novo.setStatus(novoStatus);
                 return repository.save(novo);
             } else {
                 throw new IllegalStateException("Transição de status inválida: de "
                         + novo.getStatus() + " para " + novoStatus);
             }
+        } else {
+            throw new EntityNotFoundException("Pedido com ID " + id + " não encontrado.");
         }
-        throw new EntityNotFoundException("Pedido com ID " + id + " não encontrado.");
     }
 
     private boolean isValidStatusTransition(StatusPedido statusAtual, StatusPedido novoStatus) {
@@ -49,21 +60,40 @@ public class PedidoService {
     }
 
 
-    public List<Pedido> findPedidoAll(){
-        return (List<Pedido>) repository.findAll();
+    public List<PedidoResponse> findPedidoAll() {
+        List<Pedido> novo = (List<Pedido>) repository.findAll();
+        List<PedidoResponse> findPedido = novo.stream().map(PedidoMapper::toPedidoRespponse).toList();
+        return findPedido;
     }
 
-    public Pedido getPedidoById(long id){
-        Optional<Pedido> pedido = repository.findPedidoById(id);
-        return pedido.orElseThrow(()-> new EntityNotFoundException("pedido não encontrado com id"+id));
+    public PedidoResponse getPedidoById(long id) {
+        Pedido pedido = repository.findPedidoById(id)
+                .orElseThrow(() -> new EntityNotFoundException("edido não encontrado com id"));
+        return PedidoMapper.toPedidoRespponse(pedido);
     }
 
-    public boolean deleteById(long id){
+    public PedidoResponse update(long id, PedidoRequest pedido) {
+        var updatePedido = PedidoMapper.toPedido(pedido);
+        var update = repository.findPedidoById(id).orElseThrow(() -> new
+                EntityNotFoundException("pedido não encontrado com id" + id));
+
+        update.setEndercoOrigem(updatePedido.getEndercoOrigem());
+        update.setEnderecoDestino(updatePedido.getEnderecoDestino());
+        update.setDataEntregaPrevista(updatePedido.getDataEntregaPrevista());
+        update.setStatus(updatePedido.getStatus());
+        update.setDataCriacao(updatePedido.getDataCriacao());
+        update.setVeiculo(updatePedido.getVeiculo());
+        update.setMotorista(updatePedido.getMotorista());
+        var novo = repository.save(update);
+        return PedidoMapper.toPedidoRespponse(novo);
+    }
+
+    public boolean deleteById(long id) {
         Optional<Pedido> pedido = repository.findPedidoById(id);
-        if (pedido.isPresent()){
+        if (pedido.isPresent()) {
             repository.deleteById(id);
-            return  true;
+            return true;
         }
-        return  false;
+        return false;
     }
 }

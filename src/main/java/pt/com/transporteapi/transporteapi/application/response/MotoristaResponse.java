@@ -1,7 +1,7 @@
 package pt.com.transporteapi.transporteapi.application.response;
 
 public class MotoristaResponse {
-
+    public long id;
     public String name;
     public String licenca;
     public boolean disponivel;
@@ -9,7 +9,8 @@ public class MotoristaResponse {
 
     public MotoristaResponse(){}
 
-    public MotoristaResponse(String name, String licenca, boolean disponivel, long veiculoId) {
+    public MotoristaResponse(long id, String name, String licenca, boolean disponivel, long veiculoId) {
+        this.id= id;
         this.name = name;
         this.licenca = licenca;
         this.disponivel = disponivel;
@@ -46,5 +47,13 @@ public class MotoristaResponse {
 
     public void setVeiculoId(long veiculoId) {
         this.veiculoId = veiculoId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

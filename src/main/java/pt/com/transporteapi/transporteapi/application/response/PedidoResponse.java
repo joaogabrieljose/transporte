@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 public class PedidoResponse {
 
-
     public long id;
     public String endercoOrigem;
     public String enderecoDestino;
@@ -14,11 +13,12 @@ public class PedidoResponse {
     public LocalDateTime dataCriacao;
     public LocalDateTime dataEntregaPrevista;
     public long veiculoId;
+    public long motoristaId;
 
     public PedidoResponse(){}
 
     public PedidoResponse(long id, String endercoOrigem, String enderecoDestino, StatusPedido status,
-                         LocalDateTime dataCriacao, LocalDateTime dataEntregaPrevista, long veiculoId) {
+                         LocalDateTime dataCriacao, LocalDateTime dataEntregaPrevista, long veiculoId, long motoristaId) {
         this.id = id;
         this.endercoOrigem = endercoOrigem;
         this.enderecoDestino = enderecoDestino;
@@ -26,6 +26,7 @@ public class PedidoResponse {
         this.dataCriacao = dataCriacao;
         this.dataEntregaPrevista = dataEntregaPrevista;
         this.veiculoId = veiculoId;
+        this.motoristaId = motoristaId;
     }
 
     public long getId() {
@@ -82,5 +83,13 @@ public class PedidoResponse {
 
     public void setVeiculoId(long veiculoId) {
         this.veiculoId = veiculoId;
+    }
+
+    public long getMotoristaId() {
+        return motoristaId;
+    }
+
+    public void setMotoristaId(long motoristaId) {
+        this.motoristaId = motoristaId;
     }
 }
