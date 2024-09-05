@@ -23,10 +23,14 @@ public class Pedido {
     @JoinColumn(name = "motorista_id")
     private Motorista motorista;
 
+    @ManyToOne
+    @JoinColumn(name = "rota_id")
+    private Rota rota;
+
     public Pedido(){}
 
     public Pedido(long id, String endercoOrigem, String enderecoDestino, double peso, StatusPedido status, LocalDateTime dataCriacao,
-                  LocalDateTime dataEntregaPrevista, Veiculo veiculo, Motorista motorista) {
+                  LocalDateTime dataEntregaPrevista, Veiculo veiculo, Motorista motorista, Rota rota) {
         this.id = id;
         this.endercoOrigem = endercoOrigem;
         this.enderecoDestino = enderecoDestino;
@@ -36,6 +40,7 @@ public class Pedido {
         this.dataEntregaPrevista = dataEntregaPrevista;
         this.veiculo = veiculo;
         this.motorista = motorista;
+        this.rota = rota;
     }
 
     public long getId() {
@@ -70,6 +75,14 @@ public class Pedido {
         this.peso = peso;
     }
 
+    public StatusPedido getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
+    }
+
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
@@ -102,11 +115,11 @@ public class Pedido {
         this.motorista = motorista;
     }
 
-    public StatusPedido getStatus() {
-        return status;
+    public Rota getRota() {
+        return rota;
     }
 
-    public void setStatus(StatusPedido status) {
-        this.status = status;
+    public void setRota(Rota rota) {
+        this.rota = rota;
     }
 }
